@@ -10,12 +10,8 @@ class AppsController < ApplicationController
   end
 
   def create
-    @app = BaritoApp.setup(
-      barito_app_params[:name],
-      barito_app_params[:tps_config].downcase,
-      barito_app_params[:app_group].downcase,
-      Rails.env,
-    )
+    builder = BaritoAppBuilder.setup(barito_app_params.merge(env: Rails.env))
+    @app = builder.barito_app
     if @app.valid?
       return redirect_to root_path
     else
@@ -31,6 +27,12 @@ class AppsController < ApplicationController
   private
 
   def barito_app_params
-    params.require(:barito_app).permit(:name, :tps_config, :app_group)
+    params.
+      require(:barito_app).
+      permit(:name, :tps_config, :app_group).
+      tap do |x|
+        x[:tps_config]  = x[:tps_config].downcase
+        x[:app_group]   = x[:app_group].downcase
+      end
   end
 end
