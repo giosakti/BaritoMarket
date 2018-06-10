@@ -6,8 +6,7 @@ class AppsController < ApplicationController
   def new
     @app = BaritoApp.new
     @app_groups = Figaro.env.app_groups.split(',')
-    config = YAML.load_file("#{Rails.root}/config/tps_config.yml")[Rails.env]
-    @tps_options = config.keys.map(&:capitalize)
+    @tps_options = TPS_CONFIG.keys.map(&:capitalize)
   end
 
   def create

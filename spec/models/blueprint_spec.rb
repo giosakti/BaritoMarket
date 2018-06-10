@@ -15,11 +15,10 @@ RSpec.describe Blueprint, type: :model do
   context 'generate_nodes' do
     let(:app) { create :barito_app }
     let(:env) { Rails.env }
-    let(:config) { YAML.load_file("#{Rails.root}/config/tps_config.yml") }
+    let(:tps_config) { TPS_CONFIG[app.tps_config] }
 
     it 'should generate correct number of nodes' do
       blueprint = Blueprint.new(app, env)
-      tps_config = config[env][app.tps_config]
       node_count = tps_config['instances'].values.inject(:+)
       expect(node_count).to eq(blueprint.generate_nodes.count)
     end
@@ -34,7 +33,6 @@ RSpec.describe Blueprint, type: :model do
 
     it 'should validate node name' do
       blueprint = Blueprint.new(app, env)
-      tps_config = config[env][app.tps_config]
       nodes = blueprint.generate_nodes
       names = []
       tps_config['instances'].each do |type, count|
@@ -52,7 +50,6 @@ RSpec.describe Blueprint, type: :model do
   context 'generate_file' do
     let(:app) { create :barito_app }
     let(:env) { Rails.env }
-    let(:config) { YAML.load_file("#{Rails.root}/config/tps_config.yml") }
 
     before do
       Timecop.freeze

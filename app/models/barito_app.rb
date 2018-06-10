@@ -57,8 +57,7 @@ class BaritoApp < ActiveRecord::Base
   end
 
   def tps_config_valid_key?
-    config = YAML.load_file("#{Rails.root}/config/tps_config.yml")[Rails.env]
-    config_types = config.keys.map(&:downcase)
+    config_types = TPS_CONFIG.keys.map(&:downcase)
     errors.add(:tps_config, 'Invalid Config Value') unless config_types.include?(tps_config)
   end
 

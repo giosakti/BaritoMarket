@@ -12,12 +12,10 @@ module AppsHelper
   end
 
   def tps_size(app)
-    config = YAML.load_file("#{Rails.root}/config/tps_config.yml")[Rails.env]
-    config[app.tps_config]['tps_limit']
+    TPS_CONFIG[app.tps_config]['tps_limit']
   end
 
   def tps_name(app)
-    config = YAML.load_file("#{Rails.root}/config/tps_config.yml")[Rails.env]
-    config[app.tps_config]['name']
+    TPS_CONFIG[app.tps_config]['name']
   end
 end

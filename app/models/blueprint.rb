@@ -5,13 +5,12 @@ class Blueprint
 
   def initialize(application, env)
     @env_prefix = {
-      production: 'p', staging: 's', development: 'd', uat: 'u', internal: 'i',
-      integration: 'g', test: 't'
+      development: 'd', integration: 'g', internal: 'i', production: 'p',
+      staging: 's', test: 't', uat: 'u'
     }
-    config = YAML.load_file("#{Rails.root}/config/tps_config.yml")
     @app = application
     @env = env
-    @tps_config = config[@env][@app.tps_config]
+    @tps_config = TPS_CONFIG[@app.tps_config]
   end
 
   def generate_file
